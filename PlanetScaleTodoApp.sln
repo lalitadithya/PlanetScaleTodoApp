@@ -3,9 +3,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{26CE8D4E-3B9D-45B1-9DBA-45B8C6DC4032}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deployment", "deployment", "{37AA3387-28C4-4F10-A7E0-B1348DBA0A2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlanetScaleTodoApp.Functions", "src\PlanetScaleTodoApp.Functions\PlanetScaleTodoApp.Functions.csproj", "{12C9EED7-5955-48CB-8E28-066541047F83}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12C9EED7-5955-48CB-8E28-066541047F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12C9EED7-5955-48CB-8E28-066541047F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12C9EED7-5955-48CB-8E28-066541047F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12C9EED7-5955-48CB-8E28-066541047F83}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{12C9EED7-5955-48CB-8E28-066541047F83} = {26CE8D4E-3B9D-45B1-9DBA-45B8C6DC4032}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {98357AF3-F0C4-49E8-8693-C30ED104481F}
