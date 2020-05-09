@@ -9,25 +9,40 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PlanetScaleTodoApp.Functions.Models;
 using PlanetScaleTodoApp.Functions.Dtos;
+using Microsoft.Azure.Cosmos;
+using System.Collections.Generic;
 
 namespace PlanetScaleTodoApp.Functions
 {
-    public static class AddUser
+    public class AddUser
     {
+        private readonly CosmosClient cosmosClient;
+        public AddUser(CosmosClient cosmosClient)
+        {
+            this.cosmosClient = cosmosClient;
+        }
+
         [FunctionName("AddUser")]
-        public static async Task<IActionResult> Run(
+        public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            UserDto user = JsonConvert.DeserializeObject<UserDto>(requestBody);
+            UserDto userDto = JsonConvert.DeserializeObject<UserDto>(requestBody);
 
-            if (user != null)
+            if (userDto != null)
             {
-                string responseMessage = $"Welcome {user.Username}!";
-                return new OkObjectResult(responseMessage);
+                var container = cosmosClient.GetContainer("TodoApp", "Todo");
+                Models.User user = new Models.User
+                {
+                    Id = Guid.NewGuid(),
+                    Username = userDto.Username,
+                    Items = new List<TodoItem>()
+                };
+                await container.CreateItemAsync(user, new PartitionKey(user.Id.ToString()));
+                return new OkObjectResult($"{user.Id}");
             }
             else
             {
