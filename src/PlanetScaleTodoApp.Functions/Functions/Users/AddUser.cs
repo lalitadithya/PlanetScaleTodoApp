@@ -12,7 +12,7 @@ using PlanetScaleTodoApp.Functions.Dtos;
 using Microsoft.Azure.Cosmos;
 using System.Collections.Generic;
 
-namespace PlanetScaleTodoApp.Functions
+namespace PlanetScaleTodoApp.Functions.Functions.Users
 {
     public class AddUser
     {
@@ -34,12 +34,11 @@ namespace PlanetScaleTodoApp.Functions
 
             if (userDto != null)
             {
-                var container = cosmosClient.GetContainer("TodoApp", "Todo");
+                var container = cosmosClient.GetContainer("TodoApp", "Users");
                 Models.User user = new Models.User
                 {
                     Id = Guid.NewGuid(),
-                    Username = userDto.Username,
-                    Items = new List<TodoItem>()
+                    Username = userDto.Username
                 };
                 await container.CreateItemAsync(user, new PartitionKey(user.Id.ToString()));
                 return new OkObjectResult($"{user.Id}");

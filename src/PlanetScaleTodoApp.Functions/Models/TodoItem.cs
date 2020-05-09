@@ -15,5 +15,8 @@ namespace PlanetScaleTodoApp.Functions.Models
 
         [JsonProperty(PropertyName = "isCompleted")]
         public bool IsCompleted { get; set; }
+
+        [JsonProperty(PropertyName = "userId")]
+        public Guid UserId { get; set; }
     }
 }
