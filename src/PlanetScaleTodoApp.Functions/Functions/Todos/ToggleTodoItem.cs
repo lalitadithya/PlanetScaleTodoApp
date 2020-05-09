@@ -9,23 +9,23 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Cosmos;
 using System.Linq;
-using PlanetScaleTodoApp.Functions.Models;
-using System.Collections.Generic;
 using PlanetScaleTodoApp.Functions.Dtos;
+using System.Collections.Generic;
+using PlanetScaleTodoApp.Functions.Models;
 
 namespace PlanetScaleTodoApp.Functions.Functions.Todos
 {
-    public class GetTodoItems
+    public class ToggleTodoItem
     {
         private readonly CosmosClient cosmosClient;
-        public GetTodoItems(CosmosClient cosmosClient)
+        public ToggleTodoItem(CosmosClient cosmosClient)
         {
             this.cosmosClient = cosmosClient;
         }
 
-        [FunctionName("GetTodoItems")]
+        [FunctionName("ToggleTodoItem")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = null)] HttpRequest req,
             ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
@@ -38,25 +38,24 @@ namespace PlanetScaleTodoApp.Functions.Functions.Todos
                 Models.User user = (await userFeedIterator.ReadNextAsync()).Resource.FirstOrDefault();
                 if (user != null)
                 {
+                    Guid todoItemId = Guid.Parse(req.Query["todoItemId"]);
                     var todoItemsContainer = cosmosClient.GetContainer("TodoApp", "TodoItems");
-
-                    FeedIterator<TodoItem> todoItemFeedIterator = todoItemsContainer.GetItemQueryIterator<TodoItem>($"SELECT * FROM T where T.userId = '{user.Id}'");
-                    List<TodoItemDto> todoItemDtos = new List<TodoItemDto>();
+                    FeedIterator<TodoItem> todoItemFeedIterator = todoItemsContainer.GetItemQueryIterator<TodoItem>($"SELECT * FROM T where T.userId = '{user.Id}' AND T.id = '{todoItemId}'");
                     while (todoItemFeedIterator.HasMoreResults)
                     {
-                        IEnumerable<TodoItem> todoItems = (await todoItemFeedIterator.ReadNextAsync()).Resource;
-                        foreach(var todoItem in todoItems)
+                        TodoItem todoItem = (await todoItemFeedIterator.ReadNextAsync()).Resource.FirstOrDefault();
+                        if (todoItem != null)
                         {
-                            todoItemDtos.Add(new TodoItemDto
-                            {
-                                Id = todoItem.Id.ToString(),
-                                Item = todoItem.Item,
-                                IsCompleted = todoItem.IsCompleted
-                            });
+                            todoItem.IsCompleted = !todoItem.IsCompleted;
+                            await todoItemsContainer.ReplaceItemAsync(todoItem, todoItem.Id.ToString(), new PartitionKey(todoItem.UserId.ToString()));
+                        }
+                        else
+                        {
+                            return new BadRequestObjectResult("todo item not found");
                         }
                     }
-                    
-                    return new OkObjectResult($"{JsonConvert.SerializeObject(todoItemDtos)}");
+
+                    return new OkResult();
                 }
                 else
                 {
