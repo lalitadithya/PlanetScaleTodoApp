@@ -51,7 +51,7 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
                         Username = emailId,
                         DisplayName = name
                     };
-                    await usersContainer.CreateItemAsync(newUser, new PartitionKey(newUser.Id.ToString()));
+                    await usersContainer.CreateItemAsync(newUser, new PartitionKey(newUser.Username.ToString()));
                     return new OkObjectResult($"{newUser.Id}");
                 }
             }
@@ -63,7 +63,7 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
                     Username = emailId,
                     DisplayName = name
                 };
-                await usersContainer.CreateItemAsync(user, new PartitionKey(user.Id.ToString()));
+                await usersContainer.CreateItemAsync(user, new PartitionKey(user.Username.ToString()));
                 return new OkObjectResult($"{user.Id}");
             }
         }
