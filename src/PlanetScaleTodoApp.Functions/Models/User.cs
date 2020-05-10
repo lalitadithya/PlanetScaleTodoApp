@@ -12,5 +12,7 @@ namespace PlanetScaleTodoApp.Functions.Models
 
         [JsonProperty(PropertyName = "username")]
         public string Username { get; set; }
+
+        public string DisplayName { get; set; }
     }
 }
