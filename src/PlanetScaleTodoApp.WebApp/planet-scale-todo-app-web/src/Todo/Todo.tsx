@@ -26,7 +26,7 @@ class Todo extends React.Component<{}, TodoItemsState> {
           id: (new Date()).getTime() +"",
           isCompleted: false,
           item: itemName
-        }
+        } 
       )
     })
   }
@@ -40,5 +40,6 @@ class Todo extends React.Component<{}, TodoItemsState> {
     )
   }
 }
+
 
 export default Todo
