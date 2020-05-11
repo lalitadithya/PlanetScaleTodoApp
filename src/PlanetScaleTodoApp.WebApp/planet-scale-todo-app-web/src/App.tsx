@@ -1,10 +1,9 @@
 import React from 'react'
 import './App.css'
 import { TopNav } from './_component/TopNav/TopNav'
-import { AddTodoItem } from './AddTodoItem/AddTodoItem'
 import { initializeIcons } from '@uifabric/icons'
 import { loadTheme } from '@fluentui/react'
-import ViewTodoItems from './ViewTodoItems/ViewTodoItems'
+import Todo from './Todo/Todo'
 
 initializeIcons()
 
@@ -39,10 +38,7 @@ function App() {
   return (
     <div>
       <TopNav />
-      <div className={'container'}>
-        <AddTodoItem />
-        <ViewTodoItems />
-      </div>
+      <Todo />
     </div>
   )
 }

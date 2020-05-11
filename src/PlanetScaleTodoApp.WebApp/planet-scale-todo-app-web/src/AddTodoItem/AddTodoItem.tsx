@@ -1,12 +1,52 @@
 import React from 'react';
 import { TextField, loadTheme, IconButton } from '@fluentui/react';
 
-export const AddTodoItem : React.FunctionComponent = () => {
+type AddTodoItemProps = { onAddCallback: (itemName: string) => void }
+type AddTodoItemState = { todoItem: string }
+
+class AddTodoItem extends React.Component<AddTodoItemProps, AddTodoItemState> {
   
-  return (
-    <div className={"AddTodoItemContainer"} style={{paddingTop: 20}}>
-      <TextField label="Add Todo Item:" underlined />
-      <IconButton iconProps={{iconName:'Add'}} title="Add" ariaLabel="Add" />
-    </div>
-  )
+  constructor(props: AddTodoItemProps) {
+    super(props)
+
+    this.state = {
+      todoItem: ""
+    }
+  }
+
+  private addTodoItem() {
+    this.props.onAddCallback(this.state.todoItem)
+    this.setState({
+      todoItem: ""
+    })
+  }
+
+  private todoItemChanged(ev?: React.FormEvent<HTMLElement>, newValue?: string) {
+    this.setState({
+      todoItem: newValue == undefined ? "" : newValue
+    })
+  }
+
+  private onKeyDown(kv : React.KeyboardEvent<{}>) {
+    if(kv.key == "Enter") {
+      this.addTodoItem()
+    }
+  }
+
+  public render() {
+    return (
+      <div className={"AddTodoItemContainer"} style={{paddingTop: 20}}>
+        <TextField 
+          label="Add Todo Item:" 
+          value={this.state.todoItem} 
+          underlined 
+          onChange={(ev, newValue) => this.todoItemChanged(ev, newValue)} 
+          onKeyDown={(kv) => this.onKeyDown(kv)} 
+        />
+        <IconButton iconProps={{iconName:'Add'}} title="Add" ariaLabel="Add" onClick={() => this.addTodoItem()}/>
+      </div>
+    )
+  }
 }
+
+export default AddTodoItem
