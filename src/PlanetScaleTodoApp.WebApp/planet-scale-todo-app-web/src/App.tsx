@@ -4,6 +4,7 @@ import { TopNav } from './_component/TopNav/TopNav'
 import { AddTodoItem } from './AddTodoItem/AddTodoItem'
 import { initializeIcons } from '@uifabric/icons'
 import { loadTheme } from '@fluentui/react'
+import ViewTodoItems from './ViewTodoItems/ViewTodoItems'
 
 initializeIcons()
 
@@ -40,6 +41,7 @@ function App() {
       <TopNav />
       <div className={'container'}>
         <AddTodoItem />
+        <ViewTodoItems />
       </div>
     </div>
   )
