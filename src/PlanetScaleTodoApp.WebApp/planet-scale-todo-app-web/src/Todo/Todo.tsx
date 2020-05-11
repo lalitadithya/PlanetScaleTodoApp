@@ -23,7 +23,7 @@ class Todo extends React.Component<{}, TodoItemsState> {
     console.log(this.state)
     this.setState({
       todoItems: this.state.todoItems.concat({
-          id:"9",
+          id: (new Date()).getTime() +"",
           isCompleted: false,
           item: itemName
         }
