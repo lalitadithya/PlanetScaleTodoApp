@@ -7,33 +7,16 @@ type TodoItemsListState = {
   columns: IColumn[]
 }
 
-class ViewTodoItems extends React.Component<{}, TodoItemsListState> {
+type TodoItemsListProps = {
+  todoItems: ITodoItem[]
+}
 
-  constructor(props: {}) {
+class ViewTodoItems extends React.Component<TodoItemsListProps, TodoItemsListState> {
+
+  constructor(props: TodoItemsListProps) {
     super(props)
     this.state = {
-      todoItems: [ 
-        {
-          id: "1",
-          isCompleted: false,
-          item: "Item 1"
-        },
-        {
-          id: "2",
-          isCompleted: false,
-          item: "Item 2"
-        },
-        {
-          id: "3",
-          isCompleted: false,
-          item: "Item 3"
-        },
-        {
-          id: "4",
-          isCompleted: true,
-          item: "Item 4"
-        }
-      ],
+      todoItems: this.props.todoItems,
       columns: [
         {
           key: "checkbox",
@@ -84,6 +67,14 @@ class ViewTodoItems extends React.Component<{}, TodoItemsListState> {
     this.setState({
       todoItems: todoItems
     })
+  }
+
+  public componentDidUpdate(prevProps: TodoItemsListProps, prevState: TodoItemsListState) {
+    if(prevProps.todoItems.length !== this.props.todoItems.length) {
+      this.setState({
+        todoItems: [... this.props.todoItems]
+      })
+    }
   }
 
   public render() {
