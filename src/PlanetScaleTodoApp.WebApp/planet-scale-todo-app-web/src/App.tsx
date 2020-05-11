@@ -38,7 +38,9 @@ function App() {
   return (
     <div>
       <TopNav />
-      <AddTodoItem />
+      <div className={'container'}>
+        <AddTodoItem />
+      </div>
     </div>
   )
 }

@@ -1,0 +1,12 @@
+.container {
+  margin-right: auto;
+  margin-left:  auto;
+  max-width: 960px;
+  padding-right: 10px;
+  padding-left:  10px;
+}
+
+.AddTodoItemContainer {
+  display: grid;
+  grid-template-columns: 90% 10%;
+}
