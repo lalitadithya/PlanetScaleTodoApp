@@ -1,9 +1,9 @@
 import React from 'react'
 import './App.css'
-import { TopNav } from './_component/TopNav/TopNav'
 import { initializeIcons } from '@uifabric/icons'
 import { loadTheme } from '@fluentui/react'
-import Todo from './Todo/Todo'
+import { BrowserRouter, Route, Switch } from "react-router-dom"
+import TodoHome from './TodoHome/TodoHome'
 
 initializeIcons()
 
@@ -36,10 +36,13 @@ loadTheme({
 
 function App() {
   return (
-    <div>
-      <TopNav />
-      <Todo />
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/home">
+          <TodoHome/>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   )
 }
 
