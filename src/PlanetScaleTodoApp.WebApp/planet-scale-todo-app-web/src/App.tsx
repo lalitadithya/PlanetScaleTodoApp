@@ -4,6 +4,7 @@ import { initializeIcons } from '@uifabric/icons'
 import { loadTheme } from '@fluentui/react'
 import { BrowserRouter, Route, Switch } from "react-router-dom"
 import TodoHome from './TodoHome/TodoHome'
+import Login from './Login/Login'
 
 initializeIcons()
 
@@ -40,6 +41,10 @@ function App() {
       <Switch>
         <Route path="/home">
           <TodoHome/>
+        </Route>
+
+        <Route path="/">
+          <Login/>
         </Route>
       </Switch>
     </BrowserRouter>
