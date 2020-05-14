@@ -12,6 +12,7 @@ using System.Linq;
 using PlanetScaleTodoApp.Functions.Dtos;
 using System.Collections.Generic;
 using PlanetScaleTodoApp.Functions.Models;
+using System.Security.Claims;
 
 namespace PlanetScaleTodoApp.Functions.Functions.Todos
 {
@@ -25,14 +26,15 @@ namespace PlanetScaleTodoApp.Functions.Functions.Todos
 
         [FunctionName("ToggleTodoItem")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "patch", Route = null)] HttpRequest req,
-            ILogger log)
+            [HttpTrigger(AuthorizationLevel.Function, "put", Route = null)] HttpRequest req,
+            ILogger log, ClaimsPrincipal claimsPrincipal)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            Guid userId = Guid.Parse(req.Query["userId"]);
+            string emailId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+            string name = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "name").Value;
             var usersContainer = cosmosClient.GetContainer("TodoApp", "Users");
-            FeedIterator<Models.User> userFeedIterator = usersContainer.GetItemQueryIterator<Models.User>($"SELECT * FROM U where U.id = '{userId}'");
+            FeedIterator<Models.User> userFeedIterator = usersContainer.GetItemQueryIterator<Models.User>($"SELECT * FROM U where U.username = '{emailId}'");
             if (userFeedIterator.HasMoreResults)
             {
                 Models.User user = (await userFeedIterator.ReadNextAsync()).Resource.FirstOrDefault();

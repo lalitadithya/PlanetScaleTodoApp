@@ -11,6 +11,7 @@ using Microsoft.Azure.Cosmos;
 using System.Linq;
 using PlanetScaleTodoApp.Functions.Dtos;
 using PlanetScaleTodoApp.Functions.Models;
+using System.Security.Claims;
 
 namespace PlanetScaleTodoApp.Functions.Functions.Todos
 {
@@ -25,13 +26,15 @@ namespace PlanetScaleTodoApp.Functions.Functions.Todos
         [FunctionName("AddTodoItem")]
         public async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
-            ILogger log)
+            ILogger log, ClaimsPrincipal claimsPrincipal)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            Guid userId = Guid.Parse(req.Query["userId"]);
+            string emailId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+            string name = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "name").Value;
+
             var usersContainer = cosmosClient.GetContainer("TodoApp", "Users");
-            FeedIterator<Models.User> userFeedIterator = usersContainer.GetItemQueryIterator<Models.User>($"SELECT * FROM U where U.id = '{userId}'");
+            FeedIterator<Models.User> userFeedIterator = usersContainer.GetItemQueryIterator<Models.User>($"SELECT * FROM U where U.username = '{emailId}'");
             if (userFeedIterator.HasMoreResults)
             {
                 Models.User user = (await userFeedIterator.ReadNextAsync()).Resource.FirstOrDefault();
@@ -45,7 +48,7 @@ namespace PlanetScaleTodoApp.Functions.Functions.Todos
                         Id = Guid.NewGuid(),
                         IsCompleted = todoItemDto.IsCompleted,
                         Item = todoItemDto.Item,
-                        UserId = userId
+                        UserId = user.Id
                     };
                     await todoItemsContainer.CreateItemAsync(todoItem, new PartitionKey(todoItem.UserId.ToString()));
                     return new OkObjectResult($"{todoItem.Id}");

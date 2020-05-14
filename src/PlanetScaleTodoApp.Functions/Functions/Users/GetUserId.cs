@@ -18,11 +18,11 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
 {
     public class GetUserId
     {
-        //private readonly CosmosClient cosmosClient;
-        //public GetUserId(CosmosClient cosmosClient)
-        //{
-        //    this.cosmosClient = cosmosClient;
-        //}
+        private readonly CosmosClient cosmosClient;
+        public GetUserId(CosmosClient cosmosClient)
+        {
+            this.cosmosClient = cosmosClient;
+        }
 
         [FunctionName("GetUserId")]
         public async Task<IActionResult> Run(
@@ -34,17 +34,14 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
             string emailId = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
             string name = claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "name").Value;
 
-            string authToken = req.Cookies.First(x => x.Key == "AppServiceAuthSession").Value;
-            return new RedirectResult($"http://localhost:3000/login?token={authToken}");
-
-            /*var usersContainer = cosmosClient.GetContainer("TodoApp", "Users");
+            var usersContainer = cosmosClient.GetContainer("TodoApp", "Users");
             FeedIterator<Models.User> userFeedIterator = usersContainer.GetItemQueryIterator<Models.User>($"SELECT * FROM U where U.username = '{emailId}'");
             if (userFeedIterator.HasMoreResults)
             {
                 Models.User user = (await userFeedIterator.ReadNextAsync()).Resource.FirstOrDefault();
                 if (user != null)
                 {
-                    return new OkObjectResult($"{user.Id}");
+                    // do nothing
                 }
                 else
                 {
@@ -55,8 +52,6 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
                         DisplayName = name
                     };
                     await usersContainer.CreateItemAsync(newUser, new PartitionKey(newUser.Username.ToString()));
-                    string authToken = req.Cookies.First(x => x.Key == "AppServiceAuthSession").Value;
-                    return new RedirectResult($"http://localhost:3000/login?token={authToken}");
                 }
             }
             else
@@ -68,9 +63,10 @@ namespace PlanetScaleTodoApp.Functions.Functions.Users
                     DisplayName = name
                 };
                 await usersContainer.CreateItemAsync(user, new PartitionKey(user.Username.ToString()));
-                return new OkObjectResult($"{user.Id}");
             }
-            */
+
+            string authToken = req.Cookies.First(x => x.Key == "AppServiceAuthSession").Value;
+            return new RedirectResult($"https://planet-scale-todo-app.azureedge.net/#/login?token={authToken}");
         }
     }
 }

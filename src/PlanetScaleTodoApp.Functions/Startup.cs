@@ -19,12 +19,13 @@ namespace PlanetScaleTodoApp.Functions
 
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            //builder.Services.AddSingleton((s) => {
-            //    string endpoint = configuration["EndPointUrl"];
-            //    string authKey = configuration["AuthorizationKey"];
-            //    CosmosClientBuilder configurationBuilder = new CosmosClientBuilder(endpoint, authKey);
-            //    return configurationBuilder.Build();
-            //});
+            builder.Services.AddSingleton((s) =>
+            {
+                string endpoint = configuration["EndPointUrl"];
+                string authKey = configuration["AuthorizationKey"];
+                CosmosClientBuilder configurationBuilder = new CosmosClientBuilder(endpoint, authKey);
+                return configurationBuilder.Build();
+            });
         }
     }
 }
