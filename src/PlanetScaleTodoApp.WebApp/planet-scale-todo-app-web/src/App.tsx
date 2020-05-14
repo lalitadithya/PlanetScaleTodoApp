@@ -2,7 +2,7 @@ import React from 'react'
 import './App.css'
 import { initializeIcons } from '@uifabric/icons'
 import { loadTheme } from '@fluentui/react'
-import { BrowserRouter, Route, Switch } from "react-router-dom"
+import { BrowserRouter, Route, Switch, HashRouter } from "react-router-dom"
 import TodoHome from './TodoHome/TodoHome'
 import Login from './Login/Login'
 
@@ -37,7 +37,7 @@ loadTheme({
 
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Switch>
         <Route path="/home">
           <TodoHome/>
@@ -47,7 +47,7 @@ function App() {
           <Login/>
         </Route>
       </Switch>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
