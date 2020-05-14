@@ -60,6 +60,10 @@ class ViewTodoItems extends React.Component<TodoItemsListProps, TodoItemsListSta
     const todoItems = [...this.state.todoItems]
     for(let i = 0; i < todoItems.length; i++) {
       if(todoItems[i].id == item.id) {
+        fetch("https://fa-todoapp.azurewebsites.net/api/ToggleTodoItem?code=pz6oUayhTA1DdCF5JjEswjkjMo5qBp7gf4LG9/djVpG0flYMmghLKw==&todoItemId="+item.id, {
+          credentials: "include",
+          method: "put"
+        })
         todoItems[i].isCompleted = !todoItems[i].isCompleted
       }
     }
