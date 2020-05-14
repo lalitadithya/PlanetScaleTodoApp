@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sites_fa_todoapp_name": {
+            "value": null
+        },
+        "profiles_cdn_todoapp_name": {
+            "value": null
+        },
+        "profiles_cdn_todoapp1_name": {
+            "value": null
+        },
+        "profiles_cdn_todoapp2_name": {
+            "value": null
+        },
+        "storageAccounts_satodoapp_name": {
+            "value": null
+        },
+        "serverfarms_ASP_rgtodoapp_a647_name": {
+            "value": null
+        },
+        "databaseAccounts_cosmos_todoapp_name": {
+            "value": null
+        },
+        "storageAccounts_storageaccountrgtoda335_name": {
+            "value": null
+        }
+    }
+}
