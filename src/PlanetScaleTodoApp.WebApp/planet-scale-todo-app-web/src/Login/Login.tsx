@@ -24,7 +24,7 @@ class Login extends React.Component<RouteComponentProps<{}>, {}> {
     console.log(this.props);
     
     //let w = window.open("https://fa-todoapp-dev.azurewebsites.net/.auth/login/google?post_login_redirect_url=http%3A%2F%2Flocalhost%3A3000%2F")
-    window.location.href = "https://fa-todoapp.azurewebsites.net/.auth/login/google?post_login_redirect_url=https%3A%2F%2Ffa-todoapp.azurewebsites.net%2Fapi%2FGetUserId%3Fcode%3Dk4gQl4AgCocvaP44zyqlC6KOcHYg7Z3yOd9wLwcXePwazYEtwnqbTw%3D%3D"
+    window.location.href = "/.auth/login/google?post_login_redirect_url=https%3A%2F%2Ffa-todoapp.azurewebsites.net%2Fapi%2FGetUserId%3Fcode%3Dk4gQl4AgCocvaP44zyqlC6KOcHYg7Z3yOd9wLwcXePwazYEtwnqbTw%3D%3D"
   }
 
   public render(){

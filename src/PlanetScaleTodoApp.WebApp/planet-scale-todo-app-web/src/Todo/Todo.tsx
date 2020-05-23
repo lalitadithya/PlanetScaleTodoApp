@@ -20,7 +20,7 @@ class Todo extends React.Component<{}, TodoItemsState> {
   }
 
   public componentDidMount(){
-    fetch("https://fa-todoapp.azurewebsites.net/api/GetTodoItems?code=yv2w7jd11VASHG8gKmVIfX9q/BC3zfTf/WXkvoIrfTZtDmGrfQOHjQ==", {
+    fetch("/api/GetTodoItems", {
       credentials: "include",
       method: "get"
     }).then((response) => {
