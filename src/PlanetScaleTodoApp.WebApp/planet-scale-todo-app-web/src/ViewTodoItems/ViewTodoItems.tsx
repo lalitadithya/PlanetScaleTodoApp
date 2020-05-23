@@ -1,6 +1,6 @@
-import React, { EventHandler } from 'react';
+import React from 'react';
 import ITodoItem from '../models/TodoItem'
-import { DetailsList, IColumn, SelectionMode, Checkbox, IDetailsListProps, IDetailsRowStyles, DetailsRow } from '@fluentui/react';
+import { DetailsList, IColumn, SelectionMode, Checkbox } from '@fluentui/react';
 
 type TodoItemsListState = {
   todoItems: ITodoItem[]
@@ -27,7 +27,7 @@ class ViewTodoItems extends React.Component<TodoItemsListProps, TodoItemsListSta
           iconName:"CheckboxComposite",
           onRender: (item: ITodoItem) => {
             return (
-              <Checkbox defaultChecked={item.isCompleted} onChange={(e, c) => this.ItemChanged(item)}/>
+              <Checkbox defaultChecked={item.isCompleted} onChange={() => this.ItemChanged(item)}/>
             )
           }
         },
@@ -59,7 +59,7 @@ class ViewTodoItems extends React.Component<TodoItemsListProps, TodoItemsListSta
   private ItemChanged(item: ITodoItem): void {
     const todoItems = [...this.state.todoItems]
     for(let i = 0; i < todoItems.length; i++) {
-      if(todoItems[i].id == item.id) {
+      if(todoItems[i].id === item.id) {
         fetch("https://fa-todoapp.azurewebsites.net/api/ToggleTodoItem?code=pz6oUayhTA1DdCF5JjEswjkjMo5qBp7gf4LG9/djVpG0flYMmghLKw==&todoItemId="+item.id, {
           credentials: "include",
           method: "put"
@@ -76,7 +76,7 @@ class ViewTodoItems extends React.Component<TodoItemsListProps, TodoItemsListSta
   public componentDidUpdate(prevProps: TodoItemsListProps, prevState: TodoItemsListState) {
     if(prevProps.todoItems.length !== this.props.todoItems.length) {
       this.setState({
-        todoItems: [... this.props.todoItems]
+        todoItems: [...this.props.todoItems]
       })
     }
   }

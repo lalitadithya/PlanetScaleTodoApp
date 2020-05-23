@@ -1,11 +1,8 @@
-import React, { MouseEvent } from 'react'
-import { useParams, withRouter, RouteComponentProps, Redirect, useHistory } from 'react-router-dom';
+import React from 'react'
+import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom';
 import { Cookies } from "react-cookie";
-import { DefaultButton, PrimaryButton, Button, BaseButton } from '@fluentui/react';
+import { PrimaryButton, Button, BaseButton } from '@fluentui/react';
 
-interface RouteParams {
-  token: string
-}
 
 class Login extends React.Component<RouteComponentProps<{}>, {}> {
 
